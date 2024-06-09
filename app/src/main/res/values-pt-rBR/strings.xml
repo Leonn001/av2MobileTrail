@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppTrail</string>
+    <string name="trail_app">App Trilhas</string>
+    <string name="register_trail">Registrar Trilha</string>
+    <string name="manage_trail">Gerenciar Trilhas</string>
+    <string name="manage_trail_title">Gerenciar Trilhas</string>
+    <string name="configBtn">...</string>
+    <string name="register_trail_title">Registrar Trilha</string>
+    <string name="start">Iniciar</string>
+    <string name="stop">Parar</string>
+</resources>

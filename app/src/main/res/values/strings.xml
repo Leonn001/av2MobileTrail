@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">AppTrail</string>
+    <string name="trail_app">Trail App</string>
+    <string name="register_trail">Register Trail</string>
+    <string name="manage_trail">Manage Trail</string>
+    <string name="manage_trail_title">Manage Trail</string>
+    <string name="configBtn">...</string>
+    <string name="register_trail_title">Register Trail</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
