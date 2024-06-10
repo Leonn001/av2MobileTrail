@@ -7,6 +7,10 @@
     <string name="configBtn">...</string>
     <string name="register_trail_title">Register Trail</string>
     <string name="start">Start</string>
-    <string name="stop">Stop</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="startbutton">Start</string>
+    <string name="stopbtn">Stop</string>
+    <string name="distance">Distance:</string>
+    <string name="time">Time:</string>
+    <string name="speed">Speed:</string>
 </resources>

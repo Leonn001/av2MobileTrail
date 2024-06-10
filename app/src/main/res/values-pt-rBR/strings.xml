@@ -8,5 +8,10 @@
     <string name="configBtn">...</string>
     <string name="register_trail_title">Registrar Trilha</string>
     <string name="start">Iniciar</string>
-    <string name="stop">Parar</string>
+    <string name="startbutton">Iniciar</string>
+    <string name="title_activity_maps">maps</string>
+    <string name="stopbtn">Parar</string>
+    <string name="distance">Distancia:</string>
+    <string name="time">Tempo:</string>
+    <string name="speed">Velocidade:</string>
 </resources>

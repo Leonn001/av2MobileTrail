@@ -113,4 +113,5 @@ public class MapsFragment extends Fragment {
                     REQUEST_LOCATION_UPDATES);
         }
     }
+
 }
