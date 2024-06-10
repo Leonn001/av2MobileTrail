@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
@@ -43,7 +46,7 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
     TrilhasDB trilhadb;
     private Button startbtn;
     private Button stopbtn;
-    private TextView distancetextView;
+    private TextView textView;
     private TextView timeTextView;
     private TextView speedTextView;
     int waypoint_counter;
@@ -69,7 +72,7 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
 
         startbtn = findViewById(R.id.startbtn);
         stopbtn = findViewById(R.id.stopbtn);
-        distancetextView = findViewById(R.id.textView);
+        textView = findViewById(R.id.textView);
         timeTextView = findViewById(R.id.textView4);
         speedTextView = findViewById(R.id.textView6);
 
@@ -86,7 +89,7 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
             waypoint_counter = 0;
             totalDistance = 0.0;
             lastLocation = null;
-            distancetextView.setText("0.0 m");
+            textView.setText("0.0 m");
             timeTextView.setText("0 s");
             speedTextView.setText("0.0 m/s");
             startTime = System.currentTimeMillis();
@@ -100,11 +103,35 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
             isRecording = false;
             stopLocationUpdates();
             handler.removeCallbacks(timerRunnable);
+
             if (trilhadb != null) {
-                trilhadb.close();
+                long elapsedTime = (System.currentTimeMillis() - startTime) / 1000; // em segundos
+                double averageSpeed = totalDistance / elapsedTime; // velocidade média em m/s
+
+                // Solicitar título ao usuário
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Save trail");
+                builder.setMessage("Enter the track title:");
+
+                final EditText input = new EditText(this);
+                builder.setView(input);
+
+                builder.setPositiveButton("Save", (dialog, which) -> {
+                    String title = input.getText().toString();
+
+                    trilhadb.addTrail(title, totalDistance, elapsedTime, averageSpeed);
+                    trilhadb.close();
+
+                    Toast.makeText(RegisterTrailActivity.this, "Trail saved successfully!", Toast.LENGTH_SHORT).show();
+
+                    startbtn.setEnabled(true); // Habilitar botão start ao parar
+                    stopbtn.setEnabled(false); // Desabilitar botão stop
+                });
+
+                builder.setNegativeButton("Cancelar", (dialog, which) -> dialog.cancel());
+
+                builder.show();
             }
-            startbtn.setEnabled(true); // Habilitar botão start ao parar
-            stopbtn.setEnabled(false); // Desabilitar botão stop
         });
     }
 
@@ -114,7 +141,7 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
         MarkerOptions user_markerOptions = new MarkerOptions();
         user_markerOptions.position(new LatLng(0, 0));
         user_markerOptions.title("User");
-        user_markerOptions.snippet("I'm here!");
+        user_markerOptions.snippet("I am here!");
         usuario = googleMap.addMarker(user_markerOptions);
         startLocationUpdates();
     }
@@ -181,7 +208,6 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
         if (mFusedLocationProviderClient != null) {
             mFusedLocationProviderClient.removeLocationUpdates(mLocationCallback);
         }
-
     }
 
     public void addWayPoint(Location location) {
@@ -198,7 +224,7 @@ public class RegisterTrailActivity extends AppCompatActivity implements OnMapRea
         if (lastLocation != null) {
             double distance = DistanceCalculator.calculateDistance(lastLocation, newLocation);
             totalDistance += distance;
-            distancetextView.setText(String.format("%.2f metros", totalDistance));
+            textView.setText(String.format("%.2f m", totalDistance));
 
             long elapsedTime = (System.currentTimeMillis() - startTime) / 1000; // em segundos
             timeTextView.setText(String.format("%d s", elapsedTime));
